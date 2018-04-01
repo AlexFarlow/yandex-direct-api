@@ -15,7 +15,7 @@ class TextAdAdd extends Model implements ICallbackValidation
      * @var string
      * @Assert\NotBlank()
      * @Assert\Length(
-     *      max = 33
+     *      max = 35
      * )
      */
     public $Title;
@@ -24,7 +24,7 @@ class TextAdAdd extends Model implements ICallbackValidation
      * @var string
      * @Assert\NotBlank()
      * @Assert\Length(
-     *      max = 75
+     *      max = 81
      * )
      */
     public $Text;
