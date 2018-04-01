@@ -5,6 +5,7 @@ namespace directapi\services;
 use directapi\common\criterias\IdsCriteria;
 use directapi\common\results\ActionResult;
 use directapi\DirectApiService;
+use directapi\exceptions\DirectApiException;
 
 abstract class BaseService
 {
@@ -197,6 +198,16 @@ abstract class BaseService
     {
         $response = $this->call('add', $params);
         //$result = $this->mapArray($response->AddResults, ActionResult::g);
+
+        if (!empty($response->AddResults[0]->Errors)){
+
+            throw new DirectApiException(
+                $response->AddResults[0]->Errors[0]->Message . '.<br />' .
+                $response->AddResults[0]->Errors[0]->Details . ' (' . $this->getName() . ', add)',
+                $response->AddResults[0]->Errors[0]->Code
+            );
+        }
+
         return $response->AddResults;
     }
 

@@ -5,6 +5,7 @@ namespace directapi\services\ads;
 use directapi\common\criterias\IdsCriteria;
 use directapi\common\criterias\LimitOffset;
 use directapi\common\results\ActionResult;
+use directapi\exceptions\DirectApiException;
 use directapi\services\ads\criterias\AdsSelectionCriteria;
 use directapi\services\ads\enum\AdFieldEnum;
 use directapi\services\ads\enum\DynamicTextAdFieldEnum;
@@ -110,6 +111,15 @@ class AdsService extends BaseService
         ];
         $response = $this->call('moderate', $params);
         //$result = $this->mapArray($response->ModerateResults, ActionResult::class);
+        if (!empty($response->ModerateResults[0]->Errors)){
+
+            throw new DirectApiException(
+                $response->ModerateResults[0]->Errors[0]->Message . '.<br />' .
+                $response->ModerateResults[0]->Errors[0]->Details . ' (' . $this->getName() . ', add)',
+                $response->ModerateResults[0]->Errors[0]->Code
+            );
+        }
+
         return $response->ModerateResults;
 
     }

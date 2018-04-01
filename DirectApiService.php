@@ -47,6 +47,7 @@ class DirectApiService
     public $lastCallCost = 0;
     public $unitsLimit = 0;
 
+    public $response;
     /**
      * @var AdGroupsService
      */
@@ -579,11 +580,11 @@ class DirectApiService
                 CURLOPT_POSTFIELDS => $request
             ]
         );
-        if ( ($response = curl_exec($curl)) !== FALSE ) {
+        if ( ($this->response = curl_exec($curl)) !== FALSE ) {
 
             $header_size = curl_getinfo($curl, CURLINFO_HEADER_SIZE);
-            $header = substr($response, 0, $header_size);
-            $body = substr($response, $header_size);
+            $header = substr($this->response, 0, $header_size);
+            $body = substr($this->response, $header_size);
 
             $data = json_decode($body, FALSE, 512, JSON_BIGINT_AS_STRING);
             $regex = '/Units: (\d+)\/(\d+)\/(\d+)/';
